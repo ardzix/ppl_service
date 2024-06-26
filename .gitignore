@@ -1,0 +1,24 @@
+# point
+point/migrations/*
+!point/migrations/__init__.py
+
+# promo
+promo/migrations/*
+!promo/migrations/__init__.py
+
+# point
+loyalty/migrations/*
+!loyalty/migrations/__init__.py
+
+#src folder
+src/
+
+# env file
+.env
+
+# Cache
+.DS_Store
+*.pyc
+
+# local db
+db.sqlite3

@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package point;
+
+service PointService {
+    rpc AddActivity (AddActivityRequest) returns (ActivityResponse);
+    rpc RecordActivity (RecordActivityRequest) returns (UserPointsResponse);
+    rpc GetUserPoints (GetUserPointsRequest) returns (UserPointsResponse);
+}
+
+message AddActivityRequest {
+    string name = 1;
+    string description = 2;
+    int32 point_impact = 3;
+    int32 category_id = 4;
+    string type = 5;
+}
+
+message ActivityResponse {
+    int32 id = 1;
+    string code = 2;
+}
+
+message RecordActivityRequest {
+    string code = 1;
+    string user_hash = 2;
+    string nonce = 3;
+}
+
+message UserPointsResponse {
+    int32 points = 1;
+}
+
+message GetUserPointsRequest {
+    string user_hash = 1;
+}
