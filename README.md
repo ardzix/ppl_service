@@ -84,16 +84,26 @@ docker-compose down
 
 ### gRPC Services
 
-- Add Activity: Add new activities that impact user points.
-- Record Activity: Record an activity occurrence for a user.
-- Get User Points: Retrieve the total points for a user.
+- PointService: Manages point-related operations.
+- PromoService: Manages promo-related operations.
+
+### gRPC Endpoints
+
+- PointService:
+  - AddActivity: Adds a new activity that impacts user points.
+  - RecordActivity: Records an activity occurrence for a user.
+  - GetUserPoints: Retrieves the total points for a user.
+- PromoService:
+  - GetProductPromos: Gets the promos for a specific product by product hash.
+  - CheckThresholdPromo: Checks if the subtotal qualifies for a threshold promo.
 
 ### Testing
 
 Run the gRPC test script:
 
 ```bash
-python -m ppl.point.tests.grpc_client_test
+python grpc_point_client_test.py
+python grpc_promo_client_test.py
 ```
 
 ### Cleanup Test Data
@@ -140,6 +150,48 @@ message UserPointsResponse {
 
 message GetUserPointsRequest {
     string user_hash = 1;
+}
+```
+
+The promo.proto file defines the gRPC services and messages for the promo service:
+
+```proto
+syntax = "proto3";
+
+package promo;
+
+service PromoService {
+    rpc GetProductPromos (ProductPromoRequest) returns (ProductPromoResponse);
+    rpc CheckThresholdPromo (ThresholdPromoRequest) returns (ThresholdPromoResponse);
+}
+
+message ProductPromoRequest {
+    string product_hash = 1;
+}
+
+message ProductPromoResponse {
+    bool has_discount = 1;
+    double final_price = 2;
+    bool is_bogo = 3;
+    repeated BuyXGetYInfo buy_x_get_y_promos = 4;
+    repeated string bundle_product_hashes = 5;
+    bool can_purchase_by_points = 6;
+    int32 points_required = 7;
+}
+
+message BuyXGetYInfo {
+    string required_product_hash = 1;
+    string discounted_product_hash = 2;
+    double discounted_price = 3;
+}
+
+message ThresholdPromoRequest {
+    double subtotal = 1;
+}
+
+message ThresholdPromoResponse {
+    bool has_threshold_promo = 1;
+    double discount_value = 2;
 }
 ```
 
