@@ -6,6 +6,7 @@ import django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ppl.settings')
 django.setup()
 
+from django.conf import settings
 from point.grpc import point_pb2, point_pb2_grpc
 from point.models import Category
 
@@ -47,7 +48,7 @@ def cleanup(activity_ids):
 
 def main():
     # Connect to gRPC server
-    channel = grpc.insecure_channel('localhost:50051')
+    channel = grpc.insecure_channel(f'{settings.PROMO_SERVICE_HOST}:{settings.POINT_SERVICE_PORT}')
     stub = point_pb2_grpc.PointServiceStub(channel)
 
     # Ensure category exists

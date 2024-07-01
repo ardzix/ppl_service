@@ -9,6 +9,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ppl.settings')
 import django
 django.setup()
 
+from django.conf import settings
 from point.grpc import point_pb2_grpc
 from point.grpc.grpc_service import PointService
 from promo.grpc import promo_pb2_grpc
@@ -22,11 +23,11 @@ def serve():
     promo_pb2_grpc.add_PromoServiceServicer_to_server(PromoService(), server)
 
     # Listen on two different ports
-    server.add_insecure_port('[::]:50051')
-    server.add_insecure_port('[::]:50052')
+    server.add_insecure_port(f'[::]:{settings.POINT_SERVICE_PORT}')
+    server.add_insecure_port(f'[::]:{settings.PROMO_SERVICE_PORT}')
 
     server.start()
-    print("gRPC servers running on ports 50051 and 50052...")
+    print(f'gRPC servers running on ports {settings.POINT_SERVICE_PORT} and {settings.PROMO_SERVICE_PORT}...')
     try:
         while True:
             time.sleep(86400)

@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import os
+from dotenv import load_dotenv
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -123,3 +125,19 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Get the host and port for the gRPC services
+MASTERDATA_SERVICE_HOST = os.getenv('MASTERDATA_SERVICE_HOST', 'localhost')
+MASTERDATA_SERVICE_PORT = os.getenv('MASTERDATA_SERVICE_PORT', '50051')
+POINT_SERVICE_HOST = os.getenv('POINT_SERVICE_HOST', 'localhost')
+POINT_SERVICE_PORT = os.getenv('POINT_SERVICE_PORT', '50052')
+PROMO_SERVICE_HOST = os.getenv('PROMO_SERVICE_HOST', 'localhost')
+PROMO_SERVICE_PORT = os.getenv('PROMO_SERVICE_PORT', '50053')
+LOYALTY_SERVICE_HOST = os.getenv('LOYALTY_SERVICE_HOST', 'localhost')
+LOYALTY_SERVICE_PORT = os.getenv('LOYALTY_SERVICE_PORT', '50054')
+PAYMENT_SERVICE_HOST = os.getenv('PAYMENT_SERVICE_HOST', 'localhost')
+PAYMENT_SERVICE_PORT = os.getenv('PAYMENT_SERVICE_PORT', '50055')
